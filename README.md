@@ -1,5 +1,6 @@
 # node-wolfram-alpha
-An extremely tiny Wolfram Alpha API wrapper for Node.js
+An extremely tiny Wolfram Alpha API wrapper for Node.js.Updated with newer axios version
+(Original Version: https://www.npmjs.com/package/node-wolfram-alpha)
 
 ### Features
 ✓ Single dependency (axios) 

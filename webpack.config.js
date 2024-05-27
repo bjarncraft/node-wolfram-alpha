@@ -1,9 +1,6 @@
 const { join, resolve } = require('path');
-const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const DtsGeneratorPlugin = require('dts-generator-webpack-plugin').default;
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const NpmDtsPlugin = require('npm-dts-webpack-plugin')
 
 const tsconfig = require('./tsconfig');
 
@@ -31,12 +28,7 @@ module.exports = {
         }]
       }, {
         use: [{
-          loader: 'awesome-typescript-loader',
-          options: {
-            configFileName: resolve(path.config, 'tsconfig.json'),
-            inlineSourceMap: false,
-            sourceMap: true,
-          }
+          loader: 'ts-loader',
         }]
       }]
     }]
@@ -53,24 +45,18 @@ module.exports = {
     path: path.target,
   },
   plugins: [
-    new CheckerPlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       generateStatsFile: true,
       openAnalyzer: false,
       reportFilename: 'bundles.html',
     }),
-    new DtsGeneratorPlugin({ 
+    new NpmDtsPlugin({ 
       name: 'index',
       project: path.config,
-      out: path.target
+      out: path.target,
+      force: true
     })
   ],
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-    plugins: [
-      new TsConfigPathsPlugin({ tsconfig, compiler: 'typescript' }),
-    ]
-  },
   target: 'node'
 }
